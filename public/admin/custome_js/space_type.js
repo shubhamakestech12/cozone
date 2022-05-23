@@ -23,6 +23,7 @@ $("#frm_space").on("submit", function(e) {
             if (response.status == 1) {
                 $("#frm_space").trigger('reset');
                 $("#id").val("");
+                $("#addcode").html('');
                 toastr["success"](response.msg);
                 Datatable();
                 $("#button").text('Save')
@@ -80,7 +81,34 @@ function status_space(id = "", status = "") {
             }
         },
     });
-}
+} //end of function
+
+function showSelectedImage(input = '', i = '') {
+    if (input.files && input.files[0]) {
+        var file = input.files[0];
+        // debugger;
+        if (file.type == "application/pdf") {
+            var fileReader = new FileReader();
+            fileReader.onload = function() {};
+
+            fileReader.readAsArrayBuffer(file);
+            var data = '<img src="' + siteUrl + '/images/placeholdern.png" style="width:100%" >';
+            $("#addcode").html(data);
+        } else {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                console.log(e);
+                var file = input.files[0];
+
+                var data = '<embed src="' + e.target.result + '" style="width:100%" >';
+                $("#addcode").html(data);
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+} //End of function
+
+
 
 // Edit Function    
 function edit_space(id = "") {

@@ -49,8 +49,6 @@
                                             <div class="col-lg-2 mx-3" id="addcode" style="border:1px solid #e3e6ef;">
                                                 <embed src="http://127.0.0.1:8000/images/placeholdernew.png" id="setimg" style="width:100%">
                                             </div>
-                                            
-                                            
                                         </div>
                                         <button class="btn btn-xs btn-primary px-30 float-right mt-3" type="submit" id="button">Save</button>
                                     </form>

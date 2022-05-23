@@ -15,6 +15,7 @@ class PropertyDetailsController extends Controller
         $data['css_files'] = array('plugins\datatables\dataTables.bootstrap4.min.css','plugins\datatables\buttons.bootstrap4.min.css','plugins\datatables\responsive.bootstrap4.min.css');
         $data['js_files'] = array('plugins\datatables\jquery.dataTables.min.js','plugins\datatables\dataTables.bootstrap4.min.js','plugins\datatables\dataTables.responsive.min.js','plugins\datatables\responsive.bootstrap4.min.js','plugins\datatables\dataTables.buttons.min.js','plugins\datatables\buttons.bootstrap4.min.js','admin/custome_js/property_details.js');
         $pagedata['memberships'] = DB::table('membership_plans')->where(['is_deleted'=>1])->get(['id','plan_name']);
+        $pagedata['property_names'] = DB::table('add_spaces')->where(['is_deleted'=>1])->get(['id','space_name']);
         $data['content'] = view('admin.property_details', $pagedata)->render();
         return view('template',$data);
     }//end of function
@@ -28,27 +29,27 @@ class PropertyDetailsController extends Controller
 
         $validator = Validator::make($request->all(), [
                 'property_name'      => 'required',
-                'address'      => 'required',
                 'area'=>'required',
                 'open_time'=>'required',
                 'close_time'=>'required',
+                'about'=>'required',
+                'plans'=>'required',
+                'price'=>'required',
+                
             ]);
         if($validator->passes()){
-            $formdata['title']   = $request->property_name;
-            $formdata['address']   = $request->address;
+            $formdata['property_id']   = $request->property_name;
             $formdata['area']   = $request->area;
             $formdata['open_time']   = $request->open_time;
             $formdata['close_time']   = $request->close_time;
-            // $formdata['addPlans']   = $request->addPlans;
-            if(!empty($request->spaces)){
-                foreach ($request->spaces as $key => $value) {
-                    $arr[$value] = $request->price[$key];
-                }
-                $data = json_encode($arr);
-
-                $formdata['membership_type'] = $data;
+            $formdata['about']   = $request->about;
+            $arr = array_combine($request->plans,$request->price);
+            foreach($arr as $key=>$value){
+                    $formdataa['property_detail_id'] = $request->property_name;
+                    $formdataa['membership_plan_id'] = $key;
+                    $formdataa['price'] = $value;
+                    $res = DB::table('plans_detail')->insertGetId($formdataa);
             }
-            // json_encode($arr)
             if(!empty(@$id) and !is_null(@$id)){
                 
                 $res = DB::table('property_details')->where('id',$id)->update($formdata);
@@ -74,9 +75,10 @@ class PropertyDetailsController extends Controller
     public function showPropertydetails(Request $request)
     {
         if ($request->ajax()) {
-            $data = DB::table('property_details')
+            
+            $data = DB::table('property_details')->join('add_spaces','add_spaces.id','=','property_details.property_id')
             ->where('property_details.is_deleted', 1)
-                ->get(['property_details.id as id', 'property_details.title as title','property_details.address as address','property_details.area as area','property_details.membership_type as memebership_details','property_details.open_time as open_time','property_details.close_time as close_time','property_details.is_active as is_active','property_details.is_deleted as is_deleted']);
+                ->get(['property_details.id as id', 'add_spaces.space_name as title','add_spaces.address as address','property_details.area as area','property_details.open_time as open_time','property_details.close_time as close_time','property_details.is_active as is_active','property_details.is_deleted as is_deleted']);
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('status', function ($row) {
@@ -125,10 +127,10 @@ class PropertyDetailsController extends Controller
     } //End of function
 
     //Update Function
-    public function editTopCoworking(Request $request)
+    public function editpropertydetails(Request $request)
     {
         $id = $request->id;
-        $data = TopCoworking::where('id', $id)->first();
+        $data = DB::table('property_details')->where('id', $id)->first();
         return response()->json($data);
     } //End of Function
 

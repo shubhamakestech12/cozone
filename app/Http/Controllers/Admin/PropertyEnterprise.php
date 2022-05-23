@@ -16,7 +16,7 @@ class PropertyEnterprise extends Controller
         $data['css_files'] = array('plugins\datatables\dataTables.bootstrap4.min.css','plugins\datatables\buttons.bootstrap4.min.css','plugins\datatables\responsive.bootstrap4.min.css');
         $data['js_files'] = array('plugins\datatables\jquery.dataTables.min.js','plugins\datatables\dataTables.bootstrap4.min.js','plugins\datatables\dataTables.responsive.min.js','plugins\datatables\responsive.bootstrap4.min.js','plugins\datatables\dataTables.buttons.min.js','plugins\datatables\buttons.bootstrap4.min.js','admin/custome_js/property_enterprise.js');
         $pageData['plans'] = DB::table('plans_enterprise')->where(['is_deleted'=>1])->get(['id','plan_name','is_deleted','is_active']);
-        $pageData['properties'] =DB::table('property_details')->where(['is_deleted'=>1])->get(['id','title','is_deleted','is_active']);
+        $pageData['properties'] =DB::table('add_spaces')->where(['is_deleted'=>1])->get(['id','space_name','is_deleted','is_active']);
         $pageData['amenties'] =DB::table('amenties')->where(['is_deleted'=>1])->get(['id','name','is_deleted','is_active']);
         $data['content'] = view('admin.property_enterprise',$pageData)->render();
         return view('template',$data);
@@ -66,8 +66,8 @@ class PropertyEnterprise extends Controller
     {
         if ($request->ajax()) {
             $data = DB::table('property_enterprise')->where('property_enterprise.is_deleted', 1)->join('plans_enterprise','property_enterprise.plan_id','=','plans_enterprise.id')
-            ->join('property_details','property_details.id','=','property_enterprise.property_id')
-                ->get(['property_enterprise.id as id', 'property_details.title as title','plans_enterprise.plan_name as plan_name',DB::raw('CONCAT("₹ ",property_enterprise.price) as price'),'property_enterprise.amenties as amenties','property_enterprise.is_active as is_active','property_enterprise.is_deleted as is_deleted']);
+            ->join('add_spaces','add_spaces.id','=','property_enterprise.property_id')
+                ->get(['property_enterprise.id as id', 'add_spaces.space_name as title','plans_enterprise.plan_name as plan_name',DB::raw('CONCAT("₹ ",property_enterprise.price) as price'),'property_enterprise.amenties as amenties','property_enterprise.is_active as is_active','property_enterprise.is_deleted as is_deleted']);
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('status', function ($row) {

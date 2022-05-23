@@ -23,6 +23,7 @@ function Datatable() {
             { data: "mobile_no" },
             { data: "space_type" },
             { data: "persons" },
+            { data: "property_name" },
         ],
     });
 }

@@ -25,6 +25,7 @@
                                             <th>Mobile No</th>
                                             <th>Space Type</th>
                                             <th>Persons</th>
+                                            <th>Property Name</th>
                                             
                                         </tr>
                                     </thead>

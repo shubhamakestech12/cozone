@@ -19,6 +19,7 @@
     use App\Http\Controllers\Admin\PropertyDetailsController;
     use App\Http\Controllers\Admin\PropertyMemberShipController;
     use App\Http\Controllers\Admin\PropertyEnterprise;
+    use App\Http\Controllers\Admin\ContactController;
    
     
   
@@ -129,6 +130,7 @@ Route::post('/save_property_details',[PropertyDetailsController::class , 'savePr
 Route::get('/show_property_details',[PropertyDetailsController::class , 'showPropertydetails']);
 Route::get('/status_property_details',[PropertyDetailsController::class , 'statusPropertyDetails']);
 Route::post('/delete_property_details',[PropertyDetailsController::class , 'deletePropertyDetails']);
+Route::post('/edit_property_details',[PropertyDetailsController::class , 'editpropertydetails']);
 
 
 // EnterPrise masters 

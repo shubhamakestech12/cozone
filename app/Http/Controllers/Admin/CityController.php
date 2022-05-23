@@ -25,7 +25,7 @@ class CityController extends Controller
         $data['content'] = view('admin.customlist',$pagedata)->render();
         return view('template',$data);
     }//end of function
-
+    
      // show data
      public function saveCity(Request $request){ 
 

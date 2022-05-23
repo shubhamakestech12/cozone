@@ -22,7 +22,7 @@ class SpaceController extends Controller
         $data['css_files'] = array('plugins\datatables\dataTables.bootstrap4.min.css', 'plugins\datatables\buttons.bootstrap4.min.css', 'plugins\datatables\responsive.bootstrap4.min.css');
         $data['js_files'] = array('plugins\datatables\jquery.dataTables.min.js', 'plugins\datatables\dataTables.bootstrap4.min.js', 'plugins\datatables\dataTables.responsive.min.js', 'plugins\datatables\responsive.bootstrap4.min.js', 'plugins\datatables\dataTables.buttons.min.js', 'plugins\datatables\buttons.bootstrap4.min.js', 'admin/custome_js/space_type.js');
         // $page_data1['commodity_type'] = Commodity_type::get(['id', 'title']);
-        $data['content'] = view('admin.commodity')->render();
+        $data['content'] = view('admin.space_type')->render();
         return view('template', $data);
     }
 
@@ -43,6 +43,11 @@ class SpaceController extends Controller
             $formdata['name']   = $request->space_name;
             $formdata['location']   = $request->location;
 
+            if(!empty($request->file('image'))){
+                $filename = uniqid().'.'.$request->file('image')->getClientOriginalExtension(); 
+                $request->file('image')->move(public_path('uploads'), $filename);
+                $formdata['image'] = url('uploads').'/'.$filename;
+            }
             if(!empty(@$id) and !is_null(@$id)){
                 
                 $res = SpaceType::where('id',$id)->update($formdata);

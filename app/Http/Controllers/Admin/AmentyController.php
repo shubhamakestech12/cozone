@@ -27,7 +27,7 @@ class AmentyController extends Controller
 
         $validator = Validator::make($request->all(), [
                 'amenties'      => 'required',
-                'image'      => 'required|mimes:png,jpg,jpeg',
+                'image'      => 'required',
             ]);
 
         if($validator->passes()){

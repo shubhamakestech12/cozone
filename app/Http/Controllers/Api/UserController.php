@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\City;
 use Illuminate\Http\Request;
 use \App\Models\User;
-use \App\Models\Seller;
 use Validator;
 use \Illuminate\Support\Facades\Auth;
 use \App\Models\Country;
@@ -145,7 +144,9 @@ class UserController extends Controller
     function showAddspaces(){
         $data = AddSpace::where(['add_spaces.is_deleted'=>1])->join('cities','cities.id','=','add_spaces.city_id')
                     ->join('space_types','space_types.id','=','add_spaces.space_type')
-                ->get(['add_spaces.id as id', 'add_spaces.space_name as name','space_types.name as space_name','add_spaces.address as address','cities.location as city_name','add_spaces.seat_capacity as seat_capacity','add_spaces.area as area','add_spaces.is_active as is_active','add_spaces.is_deleted as is_deleted','add_spaces.email','add_spaces.mobile']);
+                    ->join('property_image','property_image.space_id','=','add_spaces.id')
+                    ->groupBy('property_image.space_id')
+                    ->get(['add_spaces.id as id', 'add_spaces.space_name as name',DB::RAW('GROUP_CONCAT(property_image.image)as image'),'space_types.name as space_name','add_spaces.address as address','cities.location as city_name','add_spaces.seat_capacity as seat_capacity','add_spaces.area as area','add_spaces.email','add_spaces.mobile',DB::raw('CONCAT("₹ ",add_spaces.starting_price) as starting_price')]);
                 if(!empty($data) and count($data)>0){
                     return array('status'=>true,'code'=>200,'data'=>$data);
                 }else{
@@ -342,13 +343,13 @@ class UserController extends Controller
     // **** function for realationship table in country and states **// 
     function spaceType()
     {
-        $space = SpaceType::where('is_deleted',1)->get(['id','name','location']);
+        $space = SpaceType::where('is_deleted',1)->get(['id','name','location','image']);
         if(!empty($space) and count($space)>0){
             return  array('status'=>true,'code'=>200,'data'=>$space);
         }else{
             return  array('status'=>false,'code'=>201,'data'=>'','message'=>'data not found');
         }
-       
+        
     }
     //end function
 
@@ -509,13 +510,26 @@ class UserController extends Controller
             }
     }//end of function
 
-    public function getPropertyDetails()
+    public function getPropertyDetails($id)
     {
-        $data = DB::table('property_details')
+        $enterprise = DB::table('plans_enterprise')
+        ->where(['plans_enterprise.is_deleted'=>1])
+        ->get(['plans_enterprise.id','plans_enterprise.plan_name','plans_enterprise.description']);
+        $membership = DB::table('membership_plans')->join('plans_detail','membership_plans.id','=','plans_detail.membership_plan_id')
+                      ->where('membership_plans.is_deleted',1)
+                      ->get(['membership_plans.plan_name','membership_plans.plan_duration','membership_plans.description','membership_plans.image as icon',]);
+        $data = DB::table('property_details')->join('add_spaces','add_spaces.id','=','property_details.property_id')
         ->where('property_details.is_deleted', 1)
-            ->get(['property_details.id as id', 'property_details.title as title','property_details.address as address','property_details.area as area','property_details.membership_type as memebership_details','property_details.open_time as open_time','property_details.close_time as close_time','property_details.is_active as is_active','property_details.is_deleted as is_deleted']);
-        if(!empty($data) and count($data)>0){
-            return array('status'=>true,'code'=>200,'data'=>$data);
+        ->Where('add_spaces.id',$id)
+            ->get(['property_details.id as id','add_spaces.city_id','add_spaces.space_name as property_name','add_spaces.address as address','property_details.area as area','property_details.about','property_details.open_time as open_time','property_details.close_time as close_time','add_spaces.amenties']);
+        if(!empty($data)){
+            foreach ($data as $key => $value) {
+                $amenties = Amenty::whereIn("id",explode(",",$value->amenties))->get(['id','name','image']);
+                $value->amenties = $amenties;
+                $value->membership_plans = $membership;
+                $value->enterprise = $enterprise;
+            }
+            return array('status'=>true,'code'=>200,'data'=>$data[0]);
         }else{
             return array('status'=>false,'code'=>201,'data'=>[],'message'=>'data not found');
         }
@@ -537,8 +551,8 @@ class UserController extends Controller
     public function getPropertyEnterprise()
     {
             $data = DB::table('property_enterprise')->where('property_enterprise.is_deleted', 1)->join('plans_enterprise','property_enterprise.plan_id','=','plans_enterprise.id')
-            ->join('property_details','property_details.id','=','property_enterprise.property_id')
-                ->get(['property_enterprise.id as id', 'property_details.title as title','plans_enterprise.plan_name as plan_name',DB::raw('CONCAT("₹ ",property_enterprise.price) as price'),'property_enterprise.amenties as amenties','property_enterprise.is_active as is_active','property_enterprise.is_deleted as is_deleted']);
+            ->join('add_spaces','add_spaces.id','=','property_enterprise.property_id')
+                ->get(['property_enterprise.id as id', 'add_spaces.space_name as title','plans_enterprise.plan_name as plan_name',DB::raw('CONCAT("₹ ",property_enterprise.price) as price'),'property_enterprise.amenties as amenties','property_enterprise.is_active as is_active','property_enterprise.is_deleted as is_deleted']);
             if(!empty($data) and count($data)>0){
                     return array('status'=>true,'code'=>200,'data'=>$data);
            }else{
@@ -558,18 +572,47 @@ class UserController extends Controller
                    }
     }//end of function
 
-    public function getSimilarproperties(Request $request)
+    public function getSimilarproperties($city_id)
     {
-        $property_name = $request->name;
+        $data = AddSpace::where(['add_spaces.is_deleted'=>1])->join('cities','cities.id','=','add_spaces.city_id')
+        ->join('space_types','space_types.id','=','add_spaces.space_type')
+        ->join('property_image','property_image.space_id','=','add_spaces.id')
+        ->where('add_spaces.city_id',$city_id)
+        ->groupBy('property_image.space_id')
+        ->get(['add_spaces.id as id','add_spaces.city_id','add_spaces.space_name as name',DB::RAW('GROUP_CONCAT(property_image.image)as image'),'space_types.name as space_name','add_spaces.address as address','cities.location as city_name','add_spaces.seat_capacity as seat_capacity','add_spaces.area as area','add_spaces.email','add_spaces.mobile',DB::raw('CONCAT("₹ ",add_spaces.starting_price) as starting_price'),]);
+        if(!empty($data) and count($data)>0){
+            return array('status'=>true,'code'=>200,'data'=>$data);
+        }else{
+            return array('status'=>false,'code'=>201,'data'=>[],'message'=>'data not found');
+        }
+    }//end of function
 
-        $data = DB::table('property_details')
-                ->orWhere('property_details.area','like','%'.$property_name.'%')
-                ->get(['property_details.id','property_details.area','property_details.address']);
-                if(!empty($data) and count($data)>0){
-                    return array('status'=>true,'code'=>200,'data'=>$data);
-                }else{
-                      return array('status'=>false,'code'=>201,'data'=>[],'message'=>'data not found');
-                           }
+   
+    public function propertiesByCitiesSpace($city_id,$space_for)
+    {
+        $data = AddSpace::where(['add_spaces.is_deleted'=>1])->join('cities','cities.id','=','add_spaces.city_id')
+        ->join('space_types','space_types.id','=','add_spaces.space_type')
+        ->join('property_image','property_image.space_id','=','add_spaces.id')
+        ->where('add_spaces.city_id',$city_id)
+        ->where('add_spaces.space_for',$space_for)
+        ->groupBy('property_image.space_id')
+        ->get(['add_spaces.id as id', 'add_spaces.space_name as name','add_spaces.space_for',DB::RAW('GROUP_CONCAT(property_image.image)as image'),'space_types.name as space_name','add_spaces.address as address','cities.location as city_name','add_spaces.seat_capacity as seat_capacity','add_spaces.area as area','add_spaces.email','add_spaces.mobile',DB::raw('CONCAT("₹ ",add_spaces.starting_price) as starting_price'),]);
+        if(!empty($data) and count($data)>0){
+            return array('status'=>true,'code'=>200,'data'=>$data);
+        }else{
+            return array('status'=>false,'code'=>201,'data'=>[],'message'=>'data not found');
+        }
+    }//end of function
+
+    public function spaceFor()
+    {
+        $data = DB::table('space_for')->where('space_for.is_deleted', 1)
+                ->get(['space_for.id as id', 'space_for.name as name']);
+        if(!empty($data) and count($data)>0){
+                 return array('status'=>true,'code'=>200,'data'=>$data);
+        }else{
+                    return array('status'=>false,'code'=>201,'data'=>[],'message'=>'data not found');
+                }
     }
 }
 // end of class 

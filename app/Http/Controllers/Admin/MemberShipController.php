@@ -32,14 +32,20 @@ class MemberShipController extends Controller
 
         $validator = Validator::make($request->all(), [
                 'plan_name'      => 'required',
-                'price'      => 'required',
+                'plan_duration'      => 'required',
                 'description'      => 'required',
             ]);
 
         if($validator->passes()){
             $formdata['plan_name']   = $request->plan_name;
-            $formdata['price']   = $request->price;
+            $formdata['plan_duration']   = $request->plan_duration;
             $formdata['description']   = $request->description;
+            if(!empty($request->file('image'))){
+                $filename = uniqid().'.'.$request->file('image')->getClientOriginalExtension(); 
+                $request->file('image')->move(public_path('uploads'), $filename);
+                $formdata['image'] = url('uploads').'/'.$filename;
+            }
+
             if(!empty(@$id) and !is_null(@$id)){
                 
                 $res = MembershipPlan::where('id',$id)->update($formdata);
@@ -65,7 +71,7 @@ class MemberShipController extends Controller
     {
         if ($request->ajax()) {
             $data = MembershipPlan::where('membership_plans.is_deleted', 1)
-                ->get(['membership_plans.id as id', 'membership_plans.plan_name as name','membership_plans.price as price','membership_plans.description as description','membership_plans.is_active as is_active','membership_plans.is_deleted as is_deleted']);
+                ->get(['membership_plans.id as id', 'membership_plans.plan_name as name','membership_plans.plan_duration as plan_duration','membership_plans.description as description','membership_plans.is_active as is_active','membership_plans.is_deleted as is_deleted']);
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('status', function ($row) {

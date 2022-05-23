@@ -57,7 +57,7 @@ function Datatable() {
         columns: [
             { data: "id" },
             { data: "name" },
-            { data: "price" },
+            { data: "plan_duration" },
             { data: "description" },
             { data: "status" },
             { data: "action" },

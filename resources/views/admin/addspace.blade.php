@@ -29,6 +29,18 @@
                                                 <input type="text" class="form-control ih-medium ip-light radius-xs b-light" placeholder="Enter Space Name" name="space_name" id="space_name">
                                             </div>
                                             <div class="col-md-6 mb-20 px-15">
+                                                <label for="validationDefault01" class="il-gray fs-14 fw-500 align-center">Space For</label>
+                                               
+                                               <select class="form-control" name="space_for" id="space_for">
+                                                   <option value="">Select Space For</option>
+                                                   @if(!empty(@$space_for) and count(@$space_for))
+                                                        @foreach($space_for as $space)
+                                                        <option value="{{$space->id}}">{{$space->name}}</option>
+                                                        @endforeach
+                                                   @endif 
+                                               </select>
+                                            </div>
+                                            <div class="col-md-6 mb-20 px-15">
                                                 <label for="validationDefault01" class="il-gray fs-14 fw-500 align-center">Space Type</label>
                                                
                                                <select class="form-control" name="space_type" id="space_type">
@@ -64,6 +76,17 @@
                                                 <label for="validationDefault01" class="il-gray fs-14 fw-500 align-center">Area Type</label>
                                                 <input type="text" class="form-control ih-medium ip-light radius-xs b-light" placeholder="Enter Area Type" name="area_type" id="area_type">
                                             </div>
+                                            <div class="col-md-6 col-sm-6 mb-20 px-15">
+                                                <label for="validationDefault01" class="il-gray fs-14 fw-500 align-center">Select Amenties</label>
+                                                <select class="form-control js-example-basic-multiple" name="amenties[]" id="amenties" multiple="multiple">
+                                                    <option value="">Select Amenties</option>
+                                                @if(!empty($amenties) and count($amenties)>0)
+                                                @foreach(@$amenties as $amenty)
+                                                <option value="{{$amenty->id}}">{{$amenty->name}}</option>
+                                                @endforeach
+                                                @endif
+                                                </select>
+                                            </div>
                                             <div class="col-md-6 mb-20 px-15">
                                                 <label for="validationDefault01" class="il-gray fs-14 fw-500 align-center">Contact details</label>
                                                 <input type="email" class="form-control ih-medium ip-light radius-xs b-light" placeholder="Enter Email" name="email" id="email">
@@ -72,13 +95,19 @@
                                                 <label for="validationDefault01" class="il-gray fs-14 fw-500 align-center">Mobile No</label>
                                                 <input type="number" class="form-control ih-medium ip-light radius-xs b-light" placeholder="Enter Mobile No" name="mobile" id="mobile">
                                             </div>
+                                            <div class="col-md-6 mb-20 px-15">
+                                                <label for="validationDefault01" class="il-gray fs-14 fw-500 align-center">Starting Price</label>
+                                                <input type="number" class="form-control ih-medium ip-light radius-xs b-light" placeholder="Enter Starting Price" name="starting_price" id="starting_price">
+                                            </div>
+                                           
                                             <div class="form-row mx-n15">
                                                 <div class="col-md-12 mb-20 px-15">
                                                     <label for="validationDefault02" class="il-gray fs-14 fw-500 align-center">Image</label>
                                                     <a style="width: 100%;" href="javascript:void(0)" class="btn btn-lg btn-outline-lighten btn-upload" onclick="$('#image').click()"> <span data-feather="upload"></span> Click to Upload</a>
-                                                    <input type="file" required="" class="form-control  ih-medium ip-light radius-xs b-light" name="image[]" id="image" accept="image/*" style="opacity: 0;position: absolute;" onchange="showSelectedImage(this)" multiple="multiple">
+                                                    <input type="file" required=""  accept="image/png, image/jpeg, image/jpg,image/svg" class="form-control  ih-medium ip-light radius-xs b-light" name="image[]" id="image" accept="image/*" style="opacity: 0;position: absolute;" onchange="showSelectedImage(this)" multiple="multiple">
                                                 </div>
                                             </div>
+                                            
                                         </div> 
                                         <button class="btn btn-xs btn-primary px-30 float-right mt-3" type="submit" id="button">Save</button>
                                     </form>
@@ -106,6 +135,7 @@
                                             <th>City</th>
                                             <th>Seat Capacity</th>
                                             <th>Area</th>
+                                            <th>starting_price</th>
                                             <th>Status</th>
                                             <th>Actions</th>
                                         </tr>

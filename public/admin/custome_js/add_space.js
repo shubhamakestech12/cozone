@@ -1,8 +1,9 @@
-/* Project Name: Jewellery
+/* Project Name: Cozone
      Website: https://akestech.com 
-     updated by: Anoop Vishwakarma */
+     updated by: Shubham chaudhary */
 $(document).ready(function() {
     Datatable();
+    $('.js-example-basic-multiple').select2();
 
 });
 
@@ -63,6 +64,7 @@ function Datatable() {
             { data: "city_name" },
             { data: "seat_capacity" },
             { data: "area" },
+            { data: "price" },
             { data: "status" },
             { data: "action" },
         ],

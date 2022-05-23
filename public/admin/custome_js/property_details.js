@@ -1,6 +1,6 @@
 $(document).ready(function() {
     // addPlans();
-    Datatable()
+    Datatable();
 }); //end of function
 var id = "1"
 
@@ -15,7 +15,7 @@ function addPlans() {
                 options += '<option  value = "' + v.id + '" > ' + v.plan_name + ' </option>';
             })
             console.log(options);
-            html = '<div class="row mt-2 plans_added_' + id + '"> <div class="col-sm-6 col-md-6"> <select   class="form-control" required name="spaces[]" id="spaces"> <option value="">Select Membership</option> ' + options + ' </select> </div> <div class="col-sm-4 col-md-4"> <input class="form-control input-sm" placeholder="Enter Price" type="number" required name="price[]" id="price"> </div> <div class="col-sm-2 col-md-2"> <button onclick="deletePlans(this)" type="button" class="btn btn-danger btn-sm">-</button> </div> </div>';
+            html = '<div class="row mt-2 plans_added_' + id + '"> <div class="col-sm-6 col-md-6"> <select   class="form-control" required name="plans[]" id="plans"> <option value="">Select Membership</option> ' + options + ' </select> </div> <div class="col-sm-4 col-md-4"> <input class="form-control input-sm" placeholder="Enter Price" type="number" required name="price[]" id="price"> </div> <div class="col-sm-2 col-md-2"> <button onclick="deletePlans(this)" type="button" class="btn btn-danger btn-sm">-</button> </div> </div>';
             $('#addPlans').after(html);
         }
     });
@@ -80,7 +80,6 @@ function Datatable() {
             { data: "title" },
             { data: "address" },
             { data: "area" },
-            { data: "memebership_details" },
             { data: "open_time" },
             { data: "close_time" },
             { data: "status" },
@@ -131,3 +130,29 @@ function delete_property_details(id = '') {
     }
 
 } // End Of function
+
+function edit_property_details(id = "") {
+
+    $.ajaxSetup({
+            headers: {
+                "X-CSRF-Token": jQuery("meta[name=_token]").attr("content"),
+            },
+        });
+    $.ajax({
+        url: siteUrl + "/edit_property_details",
+        data: { id: id },
+        type: "post",
+        dataType: "json",
+        success: function(res) {
+            console.log(res);
+            $("#id").val(res.id);
+            $("#property_name").val(res.property_id);
+            $("#area").val(res.area);
+            $("#address").val(res.address);
+            $("#close_time").val(res.close_time);
+            $("#open_time").val(res.open_time);
+            $("#about").val(res.about);
+            $("#button").text("Update");
+        },
+    });
+}

@@ -23,10 +23,8 @@ class EnquiryController extends Controller
     {
         if ($request->ajax()) {
             $data = Enquiry::where('enquiries.is_deleted', 1)
-                    ->join('property_details','enquiries.property_id','=','property_details')
-                    ->orWhere('property_details','=','property_details.id')
-                    ->orWhere('enquiries','=','enquiries.property_id')
-                ->get(['enquiries.id as id', 'enquiries.name as name','enquiries.email as email','enquiries.mobile_no as mobile_no','enquiries.space_type as space_type','enquiries.persons as persons','enquiries.is_active as is_active','enquiries.is_deleted as is_deleted']);
+                    ->join('add_spaces','enquiries.property_id','=','add_spaces.id')
+                ->get(['enquiries.id as id', 'enquiries.name as name','enquiries.email as email','enquiries.mobile_no as mobile_no','add_spaces.space_name as property_name','enquiries.space_type as space_type','enquiries.persons as persons','enquiries.is_active as is_active','enquiries.is_deleted as is_deleted']);
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('status', function ($row) {

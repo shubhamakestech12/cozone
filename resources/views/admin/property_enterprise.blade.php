@@ -30,7 +30,7 @@
                                                     <option value="">Select Property</option>
                                                     @if(!@empty($properties) and count($properties)>0)
                                                         @foreach($properties as $properties)
-                                                            <option value="{{$properties->id}}">{{$properties->title}}</option>
+                                                            <option value="{{$properties->id}}">{{$properties->space_name}}</option>
                                                         @endforeach
                                                     @endif
                                                 </select>

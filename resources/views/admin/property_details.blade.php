@@ -25,13 +25,17 @@
                                                <input type="hidden" name="id" id="id">
                                         <div class="form-row mx-n15">
                                             <div class="col-md-6 mb-20 px-15">
-                                                <label for="validationDefault01" class="il-gray fs-14 fw-500 align-center">Property Name</label>
-                                                <input type="text" class="form-control ih-medium ip-light radius-xs b-light" placeholder="Enter Property Name" name="property_name" id="property_name">
-                                            </div>
-                                            <div class="col-md-6 mb-20 px-15">
-                                                <label for="validationDefault01" class="il-gray fs-14 fw-500 align-center">Address</label>
-                                                <textarea type="text" class="form-control ih-medium ip-light radius-xs b-light" placeholder="Enter Address" name="address" id="address"></textarea>
-                                            </div>
+                                                <label for="validationDefault01" class="il-gray fs-14 fw-500 align-center">Select Property</label>
+                                                <select class="form-control" name="property_name" id="property_name">
+                                                    <option value="">Select Property</option>
+                                                    @if(!@empty($property_names) and count($property_names))
+                                                        @foreach($property_names as $property_name)
+                                                            <option value="{{$property_name->id}}">{{$property_name->space_name}}</option>
+                                                        @endforeach
+                                                    @endif
+                                                </select>
+                                            </div>  
+                                            
                                             <div class="col-md-6 mb-20 px-15">
                                                 <label for="validationDefault01" class="il-gray fs-14 fw-500 align-center">Area</label>
                                                 <input type="text" class="form-control ih-medium ip-light radius-xs b-light" placeholder="Enter Area" name="area" id="area">
@@ -44,11 +48,16 @@
                                                 <label for="validationDefault01" class="il-gray fs-14 fw-500 align-center">Closing Time</label>
                                                 <input type="time" class="form-control ih-medium ip-light radius-xs b-light" name="close_time" id="close_time">
                                             </div>
+                                            <div class="col-md-6 mb-20 px-15">
+                                                <label for="validationDefault01" class="il-gray fs-14 fw-500 align-center">About Property</label>
+                                                <textarea type="text" class="form-control ih-medium ip-light radius-xs b-light" name="about" id="about"></textarea>
+                                            </div>
+                                            
                                             <div class="col-md-12 mb-20 px-15">
                                                 <label for="validationDefault01" class="il-gray fs-14 fw-500 align-center">Select Membership Plans</label>
                                                 <div class="row" id="addPlans">
                                                     <div class="col-sm-6 col-md-6">
-                                                        <select required class="form-control " name="spaces[]" id="spaces">
+                                                        <select required class="form-control " name="plans[]" id="plans">
                                                             <option value="">Select Membership</option>
                                                             @if(!empty(@$memberships and count($memberships)))
                                                                 @foreach (@$memberships as $item)
@@ -64,7 +73,8 @@
                                                     <div class="col-sm-2 col-md-2">
                                                         <button onclick="addPlans()" type="button" class="btn btn-success btn-sm">+</button>
                                                         </div>
-                                                </div>
+                                                </div><br>
+                                                
                                                 
                                              </div>
                                        
@@ -92,7 +102,6 @@
                                                 <th>Property Name</th>
                                                 <th>Address</th>
                                                 <th>Area</th>
-                                                <th>Membership Details</th>
                                                 <th>Open Time</th>
                                                 <th>Close Time</th>
                                                 <th>Status</th>

@@ -56,8 +56,6 @@ function Datatable() {
             { data: "id" },
             { data: "title" },
             { data: "plan_name" },
-            { data: "price" },
-            { data: "amenties" },
             { data: "status" },
             { data: "action" },
         ],

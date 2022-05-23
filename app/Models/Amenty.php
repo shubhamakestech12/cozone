@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Amenty extends Model
 {
     use HasFactory;
+    public $table = "amenties";
 }

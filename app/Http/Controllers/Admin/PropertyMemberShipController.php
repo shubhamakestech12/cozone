@@ -21,8 +21,7 @@ class PropertyMemberShipController extends Controller
         $data['css_files'] = array('plugins\datatables\dataTables.bootstrap4.min.css','plugins\datatables\buttons.bootstrap4.min.css','plugins\datatables\responsive.bootstrap4.min.css');
         $data['js_files'] = array('plugins\datatables\jquery.dataTables.min.js','plugins\datatables\dataTables.bootstrap4.min.js','plugins\datatables\dataTables.responsive.min.js','plugins\datatables\responsive.bootstrap4.min.js','plugins\datatables\dataTables.buttons.min.js','plugins\datatables\buttons.bootstrap4.min.js','admin/custome_js/property_membership.js');
         $pageData['plans'] = DB::table('membership_plans')->where(['is_deleted'=>1])->get(['id','plan_name','is_deleted','is_active']);
-        $pageData['properties'] =DB::table('property_details')->where(['is_deleted'=>1])->get(['id','title','is_deleted','is_active']);
-        $pageData['amenties'] =DB::table('amenties')->where(['is_deleted'=>1])->get(['id','name','is_deleted','is_active']);
+        $pageData['properties'] =DB::table('add_spaces')->where(['is_deleted'=>1])->get(['id','space_name','is_deleted','is_active']);
         $data['content'] = view('admin.property_membership',$pageData)->render();
         return view('template',$data);
     }//end of function
@@ -71,8 +70,8 @@ class PropertyMemberShipController extends Controller
     {
         if ($request->ajax()) {
             $data = DB::table('property_membership')->where('property_membership.is_deleted', 1)->join('membership_plans','property_membership.plan_id','=','membership_plans.id')
-            ->join('property_details','property_details.id','=','property_membership.property_id')
-                ->get(['property_membership.id as id', 'property_details.title as title','membership_plans.plan_name as plan_name',DB::raw('CONCAT("₹ ",property_membership.price) as price'),'property_membership.amenties as amenties','property_membership.is_active as is_active','property_membership.is_deleted as is_deleted']);
+            ->join('add_spaces','add_spaces.id','=','property_membership.property_id')
+                ->get(['property_membership.id as id', 'add_spaces.space_name as title','membership_plans.plan_name as plan_name','property_membership.is_active as is_active','property_membership.is_deleted as is_deleted']);
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('status', function ($row) {

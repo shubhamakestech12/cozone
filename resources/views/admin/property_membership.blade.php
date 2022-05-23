@@ -30,7 +30,7 @@
                                                     <option value="">Select Property</option>
                                                     @if(!@empty($properties) and count($properties))
                                                         @foreach($properties as $properties)
-                                                            <option value="{{$properties->id}}">{{$properties->title}}</option>
+                                                            <option value="{{$properties->id}}">{{$properties->space_name}}</option>
                                                         @endforeach
                                                     @endif
                                                 </select>
@@ -49,22 +49,6 @@
                                             <div class="col-md-6 mb-20 px-15">
                                                 <label for="validationDefault01" class="il-gray fs-14 fw-500 align-center">Price</label>
                                                 <input type="number" class="form-control ih-medium ip-light radius-xs b-light" placeholder="Enter Price" name="price" id="price">
-                                            </div>
-                                            <div class="col-md-6 mb-20 px-15">
-                                                <label for="validationDefault01" class=" align-right">Enterprise</label>
-                                                <br><input type="checkbox" class="form-control" name="enterprise" id="enterprise">
-                                            </div>
-                                            <div class="col-md-12 mb-20 px-15">
-                                                <div class="row">
-                                                    <div class="col-sm-6">
-                                                        <label for="validationDefault01" class="il-gray fs-14 fw-500 align-center">Select Amenties</label>
-                                                        @if(!empty($amenties) and count($amenties)>0)
-                                                        @foreach(@$amenties as $amenty)
-                                                        <input type="checkbox" value="{{$amenty->name}}" class="ih-medium ip-light radius-xs b-light mx-3" name="amenties[]" id="amenties">{{strToUpper($amenty->name)}}
-                                                        @endforeach
-                                                    @endif
-                                                    </div>
-                                                </div>
                                             </div>
                                         </div>  
                                         <button class="btn btn-xs btn-primary  float-right " type="submit" id="button">Save</button>
@@ -89,8 +73,6 @@
                                                 <th>ID</th>
                                                 <th>Property Name</th>
                                                 <th>Plan</th>
-                                                <th>Price</th>
-                                                <th>Amenties</th>
                                                 <th>Status</th>
                                                 <th>Actions</th>
                                             </tr>
