@@ -517,7 +517,8 @@ class UserController extends Controller
         ->get(['plans_enterprise.id','plans_enterprise.plan_name','plans_enterprise.description']);
         $membership = DB::table('membership_plans')->join('plans_detail','membership_plans.id','=','plans_detail.membership_plan_id')
                       ->where('membership_plans.is_deleted',1)
-                      ->get(['membership_plans.plan_name','membership_plans.plan_duration','membership_plans.description','membership_plans.image as icon',]);
+                      ->groupBy('membership_plans.id')
+                      ->get(['membership_plans.plan_name','plans_detail.price','membership_plans.plan_duration','membership_plans.description','membership_plans.image as icon']);
         $data = DB::table('property_details')->join('add_spaces','add_spaces.id','=','property_details.property_id')
         ->where('property_details.is_deleted', 1)
         ->Where('add_spaces.id',$id)

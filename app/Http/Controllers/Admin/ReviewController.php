@@ -23,8 +23,8 @@ class ReviewController extends Controller
     public function showReview(Request $request)
     {
         $data = DB::table('reviews')->where('reviews.is_deleted', 1)
-                ->join('property_details','reviews.property_id','=','property_details.id')
-            ->get(['reviews.id as id', 'property_details.title as title','reviews.user_id as user_id','reviews.review as review','reviews.is_active as is_active','reviews.is_deleted as is_deleted']);
+                ->join('add_spaces','reviews.property_id','=','add_spaces.id')
+            ->get(['reviews.id as id', 'add_spaces.space_name as title','reviews.user_id as user_id','reviews.review as review','reviews.is_active as is_active','reviews.is_deleted as is_deleted']);
         return Datatables::of($data)
             ->addIndexColumn()
             ->addColumn('status', function ($row) {
