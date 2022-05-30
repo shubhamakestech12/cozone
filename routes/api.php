@@ -50,6 +50,9 @@ Route::get('get_property_membership',[UserController::class,'getPropertyMembersh
 Route::get('get_similar_property/{location}',[UserController::class,'getSimilarproperties']);
 Route::get('get_cities_properties_spaces/{city_id}/{space_for}',[UserController::class,'propertiesByCitiesSpace']);
 Route::get('get_space_for',[UserController::class,'spaceFor']);
+Route::get('get_spaceby_space_type/{id}/{city_id}',[UserController::class,'getspaceBySpacetype']);
+
+
 // Route::get('get_location_filter/{area}',[UserController::class,'locationFilter']);
 // Route::get('set_password/{hash}',[UserController::class,'checkResetToken']);
 // Route::post('submit_reset_password',[UserController::class,'submitNewPassword']);  

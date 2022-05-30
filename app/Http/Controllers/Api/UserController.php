@@ -615,5 +615,20 @@ class UserController extends Controller
                     return array('status'=>false,'code'=>201,'data'=>[],'message'=>'data not found');
                 }
     }
+
+    public function getspaceBySpacetype($id,$city_id)
+    {   
+        $data = AddSpace::where(['add_spaces.is_deleted'=>1,'add_spaces.space_type'=>$id,'add_spaces.city_id'=>$city_id])->join('cities','cities.id','=','add_spaces.city_id')
+                    ->join('space_types','space_types.id','=','add_spaces.space_type')
+                    ->join('property_image','property_image.space_id','=','add_spaces.id')
+                    ->groupBy('property_image.space_id')
+                    ->get(['add_spaces.id as id', 'add_spaces.space_name as name',DB::RAW('GROUP_CONCAT(property_image.image)as image'),'space_types.name as space_name','add_spaces.address as address','cities.location as city_name','add_spaces.seat_capacity as seat_capacity','add_spaces.area as area','add_spaces.email','add_spaces.mobile',DB::raw('CONCAT("₹ ",add_spaces.starting_price) as starting_price')]);
+
+        if(!empty($data) and count($data)>0){
+            return array('status'=>true,'code'=>200,'data'=>$data);
+        }else{
+               return array('status'=>false,'code'=>201,'data'=>[],'message'=>'data not found');
+           }
+    }
 }
 // end of class 
