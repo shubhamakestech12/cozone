@@ -48,7 +48,7 @@
                                                 <label for="validationDefault01" class="il-gray fs-14 fw-500 align-center">Closing Time</label>
                                                 <input type="time" class="form-control ih-medium ip-light radius-xs b-light" name="close_time" id="close_time">
                                             </div>
-                                            <div class="col-md-6 mb-20 px-15">
+                                            <div class="col-md-12 mb-20 px-15">
                                                 <label for="validationDefault01" class="il-gray fs-14 fw-500 align-center">About Property</label>
                                                 <textarea type="text" class="form-control ih-medium ip-light radius-xs b-light" name="about" id="about"></textarea>
                                             </div>

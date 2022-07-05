@@ -4,8 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\PurchaseOrder;
-
+use App\Models\User;
+use DB;
+use Auth;
 class Dashboard extends Controller
 {
     public function index(){

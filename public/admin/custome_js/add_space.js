@@ -26,6 +26,7 @@ $("#frm_add_space").on("submit", function(e) {
                 $("#frm_add_space").trigger('reset');
                 $("#id").val("");
                 $("#addcode").html("");
+                $("#amenties").val('').trigger('change');
                 toastr["success"](response.msg);
                 Datatable();
                 $("#button").text('Save')
@@ -98,7 +99,10 @@ function edit_add_space(id = "") {
         type: "get",
         dataType: "json",
         success: function(res) {
+            console.log(res);
+            var amenties_arr = res.amenties.split(',');
             $("#id").val(res.id);
+            $("#amenties").val(amenties_arr).trigger('change');
             $("#space_name").val(res.space_name);
             $("#space_type").val(res.space_type);
             $("#address").val(res.address);
@@ -106,7 +110,9 @@ function edit_add_space(id = "") {
             $("#seat_capacity").val(res.seat_capacity);
             $("#area_type").val(res.area);
             $("#email").val(res.email);
+            $("#starting_price").val(res.starting_price);
             $("#mobile").val(res.mobile);
+            $("#space_for").val(res.space_for);
             $("#button").text('Update');
         },
     });

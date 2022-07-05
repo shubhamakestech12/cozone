@@ -38,7 +38,9 @@ class PropertyEnterprise extends Controller
         if($validator->passes()){
             $formdata['property_id']   = $request->property;
             $formdata['plan_id']   = $request->plan;
+            if($request->amenties){
             $formdata['amenties']   = implode(',',$request->amenties);
+            }
             $formdata['price']   = $request->price;
             if(!empty(@$id) and !is_null(@$id)){
                 

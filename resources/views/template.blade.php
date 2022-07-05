@@ -43,7 +43,7 @@
             <div class="navbar-left">
                 <a href="" class="sidebar-toggle">
                 <img class="svg" src="{{asset('svg/bars.svg')}}" alt="img"> </a>
-                <a class="navbar-brand" href="#">Cospace</a>                
+                <a class="navbar-brand" href="#">Cozone</a>                
             </div>
             <div class="navbar-right">
                 <ul class="navbar-right__menu">
@@ -55,21 +55,21 @@
                     </li>
                     <li class="nav-author">
                         <div class="dropdown-custom">
-                            <a href="javascript:;" class="nav-item-toggle"><img src="uploads\admin.png" alt="" class="rounded-circle"></a>
+                            <a href="javascript:;" class="nav-item-toggle"><img src="{{url('images\admin_logo.png')}}" alt="" class="rounded-circle"></a>
                             <div class="dropdown-wrapper">
                                 <div class="nav-author__info">
                                     <div class="author-img">
-                                        <img src="uploads\admin.png" alt="" class="rounded-circle">
+                                        <img src="{{url('images\admin_logo.png')}}" alt="" class="rounded-circle">
                                     </div>
                                     <div>
-                                        {{-- <h6>{{session('admin_data')->name}}</h6> --}}
+                                        <h6>{{session('admin_data')->name}}</h6>
                                     </div>
                                 </div>
                                 <div class="nav-author__options">
                                     <ul>
                                         <li>
                                             <a href="">
-                                                <span data-feather="user"></span> Profile</a>
+                                              <p>{{session('admin_data')->email}}</p></a>
                                         </li>
                                     </ul>
                                     <a href="{{url('admin-logout')}}" class="nav-author__signout">

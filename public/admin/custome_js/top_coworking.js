@@ -138,7 +138,6 @@ function edit_topCoworking(id = "") {
             $("#space_types").val(res.space_type);
             $("#city").val(res.city);
             $(".selection").val(res.space_names);
-
             $("#button").text("Update");
         },
     });

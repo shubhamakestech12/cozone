@@ -4,7 +4,7 @@
                 <div class="row ">
                     <div class="col-lg-12">
                         <div class="breadcrumb-main">
-                            <h4 class="text-capitalize breadcrumb-title">Cospace Dashboard</h4>
+                            <h4 class="text-capitalize breadcrumb-title">Cozone Dashboard</h4>
                             <div class="breadcrumb-action justify-content-center flex-wrap">
                                 <div class="action-btn">
                                     <div class="form-group mb-0">
@@ -69,8 +69,8 @@
                         <div class="ap-po-details p-25 radius-xl bg-white d-flex justify-content-between">
                             <div>
                                 <div class="overview-content">
-                                    <h1>10 g</h1>
-                                    <p>Current Gold Collection</p>
+                                    <h1>Cozone</h1>
+                                    <p>Welcome To Cozone</p>
                                 </div>
                             </div>
                             <div class="ap-po-timeChart">
@@ -90,7 +90,7 @@
                         <div class="ap-po-details p-25 radius-xl bg-white d-flex justify-content-between">
                             <div>
                                 <div class="overview-content">
-                                    <h1>₹ 00.00</h1>
+                                    <h1>Working Spaces</h1>
                                     <p>Current Amt Collection</p>
                                 </div>
                             </div>

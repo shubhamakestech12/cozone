@@ -36,14 +36,11 @@ class PropertyMemberShipController extends Controller
         $validator = Validator::make($request->all(), [
                 'property'      => 'required',
                 'plan'      => 'required',
-                'price'=>'required',
             ]);
 
         if($validator->passes()){
             $formdata['property_id']   = $request->property;
             $formdata['plan_id']   = $request->plan;
-            $formdata['amenties']   = implode(',',$request->amenties);
-            $formdata['price']   = $request->price;
             if(!empty(@$id) and !is_null(@$id)){
                 
                 $res = DB::table('property_membership')->where('id',$id)->update($formdata);

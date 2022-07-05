@@ -92,8 +92,10 @@ function edit_plan(id = "") {
         type: "get",
         dataType: "json",
         success: function(res) {
+            console.log(res);
             $("#id").val(res.id);
             $("#plan_name").val(res.plan_name);
+            $("#plan").val(res.plan_duration);
             $("#price").val(res.price);
             $("#description").val(res.description);
             $("#button").text('Update');
